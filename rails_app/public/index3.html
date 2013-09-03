@@ -1,0 +1,685 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>rMM - Remote Mobility Monitoring</title>
+	<link href="css/examples.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/superfish.css" media="screen">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+	<script language="javascript" type="text/javascript" src="js/jquery.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	<script src="js/hoverIntent.js"></script>
+	<script src="js/superfish.js"></script>
+	<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>	
+	
+	
+		<script type="text/javascript" src="cal3djs/base.js"></script>
+		<script type="text/javascript" src="cal3djs/math.js"></script>
+		<script type="text/javascript" src="cal3djs/bounding.js"></script>
+		<script type="text/javascript" src="cal3djs/corematerial.js"></script>
+		<script type="text/javascript" src="cal3djs/coresubmesh.js"></script>
+		<script type="text/javascript" src="cal3djs/coremesh.js"></script>
+		<script type="text/javascript" src="cal3djs/corebone.js"></script>
+		<script type="text/javascript" src="cal3djs/coreskeleton.js"></script>
+		<script type="text/javascript" src="cal3djs/coremodel.js"></script>
+		<script type="text/javascript" src="cal3djs/coresubmorphtarget.js"></script>
+		<script type="text/javascript" src="cal3djs/coremorphanimation.js"></script>
+		<script type="text/javascript" src="cal3djs/corekeyframe.js"></script>
+		<script type="text/javascript" src="cal3djs/coretrack.js"></script>
+		<script type="text/javascript" src="cal3djs/coreanimation.js"></script>
+		<script type="text/javascript" src="cal3djs/submesh.js"></script>
+		<script type="text/javascript" src="cal3djs/mesh.js"></script>
+		<script type="text/javascript" src="cal3djs/bone.js"></script>
+		<script type="text/javascript" src="cal3djs/skeleton.js"></script>
+		<script type="text/javascript" src="cal3djs/model.js"></script>
+		<script type="text/javascript" src="cal3djs/animation.js"></script>
+		<script type="text/javascript" src="cal3djs/mixer.js"></script>
+		<script type="text/javascript" src="cal3djs/morphtargetmixer.js"></script>
+		<script type="text/javascript" src="cal3djs/physique.js"></script>
+		<script type="text/javascript" src="cal3djs/springsystem.js"></script>
+		<script type="text/javascript" src="cal3djs/renderer.js"></script>
+		<script type="text/javascript" src="cal3djs/loader.js"></script>
+		<script type="text/javascript" src="cal3djs/datasource.js"></script>
+		<script type="text/javascript" src="cal3djs/error.js"></script>
+		<script type="text/javascript" src="./library/spidergl/spidergl.js"></script>
+		<script type="text/javascript" src="./cally/main.js"></script>
+		<script type="text/javascript" src="./cally/ui.js"></script>
+		<script type="text/javascript" src="./cally/model.js"></script>
+		<script type="text/javascript" src="./cally/util.js"></script>
+	
+	
+	<script type="text/javascript">
+
+		var myArray = [];
+		var more_values = 800;	
+		for (var i=0;i<more_values;i++){ myArray[i]="0";}
+		var density_data = [];
+
+		//data for trajectory
+		var datax = [];
+		var datay = [];
+		var current_round = 0;
+		var max_round = 0;
+		var all_data = [];
+
+
+
+	$(function() {
+
+
+		$.ajaxSetup ({
+			cache: false
+		});
+			
+		var ondemo = false;
+
+		// We use an inline data source in the example, usually data would
+		// be fetched from a server
+
+		var data_den = [];
+		var datayy = [];
+		var dataxx = [];
+
+		function cleanData() {
+			data_den = density_data;//[];
+			datayy = [];
+			dataxx = [];
+
+		}
+
+		function updateDensityDataChart() {
+			
+			if (data_den.length > more_values)
+				data_den = data_den.slice(1);
+
+			var res = [];
+			for (var i = 0; i < data_den.length; ++i) {
+				res.push([i, data_den[i]])
+			}
+
+			return res;
+		}
+		
+		
+		function updateTrajectoryDataChart() {
+
+					if (datayy.length == datay.length){
+						//datayy = [];
+						//dataxx = [];
+					}
+					else{
+						datayy.push(datay[datayy.length]);
+						dataxx.push(datax[dataxx.length]);
+					}
+					// Zip the generated y values with the x values
+
+					var res = [];
+					for (var i = 0; i < datayy.length; ++i) {
+						res.push([dataxx[i], datayy[i]])
+					}
+
+					return res;
+				}
+
+		// Set up the control widget
+
+		var updateInterval = 120000;
+		$("#updateInterval").val(updateInterval).change(function () {
+			var v = $(this).val();
+			if (v && !isNaN(+v)) {
+				updateInterval = +v;
+				if (updateInterval < 1) {
+					updateInterval = 1;
+				} else if (updateInterval > 2000) {
+					updateInterval = 2000;
+				}
+				$(this).val("" + updateInterval);
+			}
+		});
+		
+
+		
+
+		var density_plot = $.plot("#density_placeholder", [updateDensityDataChart() ], {
+			
+			series: {
+				shadowSize: 0	// Drawing is faster without shadows
+			},
+			//points: { show: true },
+			yaxis: {
+				min: 0,
+				max: 200
+			},
+			xaxis: {
+				min: 0,
+				max: 800,
+				show: true
+			}
+		});
+		
+		var trajectory_plot = $.plot("#trajectory_placeholder", [ updateTrajectoryDataChart() ], {
+			series: {
+				shadowSize: 0	// Drawing is faster without shadows
+			},
+			points: { show: true },
+			yaxis: {
+				min: -1,
+				max: 1
+			},
+			xaxis: {
+				show: true,
+				min: -1,
+				max: 1
+			}
+		});
+
+
+		function run_current_round(){
+			var round_index = current_round;
+			var densi = all_data.den[round_index].split(" ");
+			density_data = myArray.concat(densi);
+			datax = all_data.tra[round_index].x.split(" ");
+			datay = all_data.tra[round_index].y.split(" ");
+			cleanData();
+			show_demo_task();
+
+			$( "#flashContent" ).hide();
+
+			$( ".live_menu" ).hide();
+			$( ".recorded_menu" ).show();
+		}
+
+		function update_demo_data(taskid){
+			var browse_url = 'session/browse.json?tid='+taskid;
+			$.get(browse_url, function(data) {
+				if(data.length>0){
+					var task = data[0];
+					all_data = task;
+					max_round = task.num;
+					current_round = 1;
+
+					run_current_round();
+					//var num_round = task.num;
+					//var round_index = 1;
+					//var densi = task.den[round_index].split(" ");
+					//density_data = myArray.concat(densi);
+					//datax = task.tra[round_index].x.split(" ");
+					//datay = task.tra[round_index].y.split(" ");
+					//show_demo_task();
+
+					//$( "#flashContent" ).hide();
+
+					//$( ".live_menu" ).hide();
+					//$( ".recorded_menu" ).show();
+				}
+			});
+		}
+
+		function update() {
+
+			density_plot.setData([updateDensityDataChart()]);
+			trajectory_plot.setData([updateTrajectoryDataChart()]);
+			// Since the axes don't change, we don't need to call plot.setupGrid()
+
+			density_plot.draw();
+			trajectory_plot.draw();
+			setTimeout(update, updateInterval);
+		}
+		
+	/* START UI HERE */
+	$( "#rgb_video" ).hide();
+	$( "#depth_video" ).hide();
+	$( "#trajectory" ).hide();
+	$( "#density" ).hide();
+	$( "#skeleton" ).hide();
+	$( ".patient_info" ).hide();
+	$( "#flashContent" ).hide();
+	
+	function browse_sessions(pid, pstate, ptype ) {
+		var browse_url = 'session/find.json?pid='+pid+'&pstate='+pstate+'&ptype='+ptype;
+		$.get(browse_url, function(data) {
+		  //alert(data);
+		  $('#pick_data').empty();
+		  for (var i=0;i<data.length;i++){ 
+			$("#pick_data").append('<option value="'+data[i].tid+'">'+data[i].rat.replace("T"," ").replace("Z"," ")+'</option>');
+		  }
+		  
+		});
+		
+	}
+	
+	function show_demo_task() {
+
+		//updateInterval = 30;
+		//update();
+		if (updateInterval >= 120000){
+			updateInterval = 30;
+			update();
+		};
+		
+		if($('#rgb_check').attr('checked')) {
+			$( "#rgb_video" ).show();
+		}else $( "#rgb_video" ).hide();
+		if($('#depth_check').attr('checked')) {
+			$( "#depth_video" ).show();
+		}else $( "#depth_video" ).hide();
+		
+		if($('#trajectory_check').attr('checked')) {
+			$( "#trajectory" ).show();
+		}else $( "#trajectory" ).hide();
+		if($('#density_check').attr('checked')) {
+			$( "#density" ).show();
+		} else $( "#density" ).hide();
+		if($('#skeleton_check').attr('checked')) {
+			$( "#skeleton" ).show();
+		} else $( "#skeleton" ).hide();
+		$( ".patient_info" ).show();
+		$( "#get_started" ).hide();
+		//$( "#splash_div" ).html("Remote Mobility Monitoring");
+		
+
+	}
+	
+    $( "#start_button" ).click(function() {
+		ondemo = true;
+		$( "#set_up" ).dialog( "close" );
+		show_demo_task();
+		
+		if($('#rgb_check').attr('checked')) {
+			$( "#flashContent" ).show();
+		}else $( "#flashContent" ).hide();
+		$( "#rgb_video" ).hide();
+		
+		$( ".live_menu" ).show();
+		$( ".recorded_menu" ).hide();
+		$('#info_dialog').html("Session Date: Real-time");
+    });
+	
+	$( "#go_history_button" ).click(function() {
+		var task_id = $('#pick_data').val();
+		if(task_id != "0"){
+			ondemo = true;
+			$( "#recorded_dialog" ).dialog( "close" );
+			update_demo_data(task_id);
+			
+			//update info session
+			var pid = $('#pick_patient_id').val();
+			var pstate = ($('#pick_patient_state').val()=="1")?"On":"Off";
+			var ptype = $('#pick_patient_task').val();
+			var pdate = $('#pick_data option:selected').text();
+			$('#info_dialog').html("Patient ID: "+pid+"<br/>Patient State: "+pstate+"<br/>Task Type: "+ptype+"<br/>Session Date: "+pdate+"");
+		}
+    });
+	
+	$( "#set_up" ).dialog({
+		  autoOpen: false,
+		  show: {
+			//effect: "blind",
+			//duration: 1000
+		  },
+		  hide: {
+			//effect: "blind",
+			//duration: 1000
+		  },
+		  width: "700px",
+		  //height: "1050px",
+		  modal: true,
+		  close: function( event, ui ) {
+				if(!ondemo){
+					$( "#get_started" ).show();
+					//$( "#splash_div" ).html("Remote Mobility Monitoring");
+				}
+				ondemo = false;
+			}
+		});
+		
+	$( "#recorded_dialog" ).dialog({
+		  autoOpen: false,
+		  show: {
+			//effect: "blind",
+			//duration: 1000
+		  },
+		  hide: {
+			//effect: "explode",
+			//duration: 1000
+		  },
+		  width: "650px",
+		  modal: true,
+		  close: function( event, ui ) {
+				if(!ondemo){
+					$( "#get_started" ).show();
+					//$( "#splash_div" ).html("Remote Mobility Monitoring");
+				}
+			}
+		});	
+	
+	$( "#info_dialog" ).dialog({
+	  autoOpen: false,
+	  height:240,
+	  width: 500,
+	  modal: true,
+	});	
+	
+	$( "#save_session" ).dialog({
+	  autoOpen: false,
+	  width: "450px",
+	  modal: true,
+	   buttons: {
+        "Save": function() {
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+	});	
+	
+	$( ".menu_play" ).click(function() {
+			if (updateInterval >= 120000){
+				updateInterval = 30;
+				update();
+			};
+	});
+	
+	$( ".menu_pause" ).click(function() {
+			updateInterval = 120000;
+	});
+
+	$( ".menu_back" ).click(function() {
+		if(current_round > 1){
+			current_round--;
+			run_current_round();	
+		}
+	});
+
+	$( ".menu_next" ).click(function() {
+		if(current_round < max_round){
+			current_round++;
+			run_current_round();	
+		}
+	});
+	
+	//$( ".menu_stop" ).click(function() {
+	//	$( "#trajectory" ).hide();
+	//	$( "#density" ).hide();
+	//	$( "#skeleton" ).hide();
+	//	$( ".patient_info" ).hide();
+	//	$( "#get_started" ).show();
+	// });
+	
+	$( ".menu_info" ).click(function() {
+			$( "#info_dialog" ).dialog( "open" );
+	});
+	
+	$( ".menu_record" ).click(function() {
+			$( "#save_session" ).dialog( "open" );
+	});
+	
+	$( "#get_started,.menu_stop" ).click(function() {
+		//updateInterval = 120000;
+		$( "#trajectory" ).hide();
+		$( "#density" ).hide();
+		$( "#skeleton" ).hide();
+		$( "#get_started" ).hide();
+		$( ".patient_info" ).hide();
+		
+		$( "#rgb_video" ).hide();
+		$( "#depth_video" ).hide();
+		$( "#flashContent" ).hide();
+		$( "#set_up" ).dialog( "open" );
+		ondemo = false;
+		//$( "#splash_div" ).html("Configure");
+	});
+
+	$("#pick_patient_id,#pick_patient_state,#pick_patient_task").change(function(){
+		var pid = $('#pick_patient_id').val();
+		var pstate = $('#pick_patient_state').val();
+		var ptype = $('#pick_patient_task').val();
+		if(pid !="0"){
+			browse_sessions(pid, pstate, ptype);
+		}
+
+	});
+	
+	$( "#view_button" ).click(function() {
+		ondemo = true;
+		$( "#set_up" ).dialog( "close" );
+		//browse_sessions()
+		$( "#recorded_dialog" ).dialog( "open" );
+	});
+	
+	 $( "#accordion" ).accordion({ 
+		collapsible: true,
+		heightStyle: "auto",
+		active: 2
+		});		
+		
+	/* END UI HERE */	
+	
+
+	
+
+	});//end $(function() {
+	
+	
+
+  </script>
+	
+	
+	
+</head>
+<body>
+	<div id="splash_div">
+		Remote Mobility Monitoring
+	</div>
+	<div id="get_started"></div>
+	
+	<div class="patient_info">
+		<div class="recorded_menu" style="width:300px;border: 3px gray solid;margin: 5px auto ;">
+			<div class="menu_play"></div>
+			<div class="menu_pause"></div>
+			<div class="menu_stop"></div>
+			<div class="menu_back"></div>
+			<div class="menu_next"></div>
+			<div class="menu_info"></div>
+			<div style="clear: both;"></div>
+		</div>
+		<div class="live_menu" style="width:150px;border: 3px gray solid;margin: 5px auto ;">
+			<div class="menu_stop"></div>
+			<div class="menu_record"></div>
+			<div class="menu_info"></div>
+			<div style="clear: both;"></div>
+		</div>
+	</div>
+	
+	<div class="charts_container">
+		
+		<div id="flashContent">
+			<object type="application/x-shockwave-flash" id="StrobeMediaPlayback" name="StrobeMediaPlayback" align="middle" data="swfs/StrobeMediaPlayback.swf" width="350" height="350">
+				<param name="quality" value="high">
+				<param name="bgcolor" value="#000000">
+				<param name="allowscriptaccess" value="sameDomain">
+				<param name="allowfullscreen" value="true">
+				<param name="flashvars" value="src=rtmp://localhost/live/livestream&amp;streamType=live&amp;autoPlay=true&amp;controlBarAutoHide=true&amp;controlBarPosition=bottom">
+			</object>
+        </div>
+		
+		<div id="rgb_video">
+			<object type="application/x-shockwave-flash" id="StrobeMediaPlayback" name="StrobeMediaPlayback" align="middle" data="swfs/StrobeMediaPlayback.swf" width="350" height="350">
+				<param name="quality" value="high">
+				<param name="bgcolor" value="#000000">
+				<param name="allowscriptaccess" value="sameDomain">
+				<param name="allowfullscreen" value="true">
+				<param name="flashvars" value="src=rtmp://localhost/vod/mp4:Walking_1_1_Color.f4v&amp;streamType=recorded&amp;autoPlay=true&amp;controlBarAutoHide=true&amp;controlBarPosition=bottom">
+			</object>
+		</div>
+		
+		<div id="depth_video">
+			<object type="application/x-shockwave-flash" id="StrobeMediaPlayback" name="StrobeMediaPlayback" align="middle" data="swfs/StrobeMediaPlayback.swf" width="350" height="350">
+				<param name="quality" value="high">
+				<param name="bgcolor" value="#000000">
+				<param name="allowscriptaccess" value="sameDomain">
+				<param name="allowfullscreen" value="true">
+				<param name="flashvars" value="src=rtmp://localhost/vod/mp4:Walking_1_1_Depth.f4v&amp;streamType=recorded&amp;autoPlay=true&amp;controlBarAutoHide=true&amp;controlBarPosition=bottom">
+			</object>
+		</div>
+		
+		<div id="skeleton" title="Skeleton Video">
+			<canvas id="CALLY_CANVAS" style="border: 1px solid gray" width="350" height="350"></canvas>
+		</div>
+	
+	
+		<div id="trajectory" title="Trajectory">
+			<div class="demo-container">
+				<div id="trajectory_placeholder" class="demo-placeholder"></div>
+			</div>
+			<div class="demo_title">Trajectory</div>
+		</div>
+	
+		<div id="density" title="Density">
+			<div class="demo-container">
+				<div id="density_placeholder" class="demo-placeholder"></div>
+			</div>
+			<div class="demo_title">Density</div>
+		</div>
+		
+		<div style="clear: both;"></div>
+	</div>
+	
+	<div class="patient_info">
+		<div class="recorded_menu" style="width:300px;border: 3px gray solid;margin: 5px auto ;">
+			<div class="menu_play"></div>
+			<div class="menu_pause"></div>
+			<div class="menu_stop"></div>
+			<div class="menu_back"></div>
+			<div class="menu_next"></div>
+			<div class="menu_info"></div>
+			<div style="clear: both;"></div>
+		</div>
+		<div class="live_menu" style="width:150px;border: 3px gray solid;margin: 5px auto ;">
+			<div class="menu_stop"></div>
+			<div class="menu_record"></div>
+			<div class="menu_info"></div>
+			<div style="clear: both;"></div>
+		</div>
+	</div>
+	
+	<!-- Dialog here!-->
+	<div id="set_up"  title="Monitoring">
+		<div class="tabl">
+			<div class="row">
+				<div id="left">Live Monitoring
+					<div id="start_button"></div>
+				</div>
+				<div id="right">Browse Recorded Sessions
+					<div id="view_button"></div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div id="accordion" >
+		  <h3>Configuration</h3>
+			<div id="accordion_sub">
+				<div style="float:left;width:292px;">  <h2>Sensors</h2> <br/>
+					<ul>
+						<li>
+							<input checked="true" type="checkbox" />
+							Kinect
+						</li>
+						<li>
+						<input type="checkbox" disabled="disabled"/>
+							Motion
+						</li>
+					</ul>						
+				</div>
+				<div style="float:left;width:195px;"> 
+					<h2>Analysis Toolbar</h2>
+					<ul>
+						<li>
+						<input id="rgb_check" type="checkbox"/>
+							RGB Video
+						</li>
+						<li>
+							<input id="depth_check" type="checkbox"/>
+							Depth Video
+						</li>
+						<li>
+							<input id="skeleton_check" checked="true" type="checkbox" />
+							Skeleton Video
+						</li>
+						<li>
+							<input id="trajectory_check" checked="true" type="checkbox" />
+							Trajectory
+						</li>
+						<li>
+							<input id="density_check" checked="true" type="checkbox" />
+							Density
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Dialog End here!-->
+	
+	<!-- Dialog Recorded!-->
+	<div id="recorded_dialog"  title="Select Session">
+		<div style="float:left;width:150px;">
+			Patient ID: <br/>
+			State: <br/> 
+			Task type: <br/>
+			Session Date: <br/>
+		</div>
+		<div style="float:left;width:250px;">
+			<select id="pick_patient_id">
+			  <option value="0">Choose Patient ID</option>
+			  <option value="1">1</option>
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5</option>
+			</select>
+
+			<br/>
+			<select id="pick_patient_state">
+			  <option value="0">Off</option>
+			  <option value="1">On</option>
+			</select>
+			<br/>
+			<select id="pick_patient_task">
+			  <option value="1">Walking and turning</option>
+			  <option value="2">Dual-task conditions:</option>
+			  <option value="3">Walking around a piece of furniture</option>
+			  <option value="4">Balance tasks</option>
+			  <option value="5">Upper-extremity reaching tasks</option>
+			</select>
+			<br/>
+			<select id="pick_data">
+			  <option value="0">-------</option>
+			</select>
+		</div>
+
+		<div id="go_history_button"></div>
+		
+	</div>
+	<!-- Dialog Recorded End here!-->
+
+	<!-- Dialog data info!-->
+	<div id="info_dialog"  title="Info">
+		Session Date: Real-time Streaming data.
+	</div>
+	<!-- Dialog data info End here!-->
+	
+	<!-- Dialog save session!-->
+	<div id="save_session" title="Save Session">
+		Session Name <input type="text"/>
+	</div>
+	<!-- End Dialog save session!-->
+	
+	<div class="footer"> </div>
+	<div class="footer"><center> © 2013 Viterbi School of Engineering, USC.<center></div>
+
+</body>
+</html>

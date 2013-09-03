@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="span6" style="padding-top:100px;">
+  		<h1>Share the food we love</h1>
+  </div>
+
+
+  <div class="span6">
+
+	<% if user_signed_in? %>
+
+	<% else %>
+		<%= render :partial => 'devise/sessions/form' %>
+	<% end %>
+
+  </div>
+</div>

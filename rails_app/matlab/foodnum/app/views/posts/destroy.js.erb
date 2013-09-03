@@ -1,0 +1,3 @@
+<% if !@post.id.blank? %>
+  $("#post_<%= @post.id %>").remove();
+<% end %>

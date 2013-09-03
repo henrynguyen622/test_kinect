@@ -1,0 +1,48 @@
+<% if @post.valid? %>
+
+	var image_div = '<%= image_tag(@post.postphoto.small_thumb) if @post.postphoto? %>' ;
+	var new_row = "<tr id='post_<%= @post.id%>'><td><%= @post.title %></td>";
+	new_row = new_row + "<td><%= @post.text %></td>";
+	new_row = new_row + "<td><%= @post.rating %></td>";
+	new_row = new_row + "<td><%= @post.location %></td>";
+	new_row = new_row + "<td>"+image_div+"</td>"; 
+	new_row = new_row + '<td><%= button_to "delete", {:controller => :posts,
+	      :action => "destroy", :id => @post.id }, :method => :delete,:remote => true %></td>';
+
+	new_row = new_row +"</tr>";
+	  //Display the new post
+	$("#post_text").val("");
+
+	$("#homewall").prepend(new_row);
+
+
+   var formpost = $('#tiles').children(":first");//.clone()
+   $('#upload_post').prepend(formpost);
+
+   var firstPostStyle = $(formpost).attr("style");
+   $(formpost).attr("style","");
+
+
+	var new_post = '<li style="'+firstPostStyle+'"><%= image_tag(@post.postphoto.thumb, :size=>"262x262") if @post.postphoto? %>';
+    new_post = new_post + '<div class="star" data-score="<%= @post.rating %>" style="text-align:center;padding-top:10px;"></div>';
+    new_post = new_post + ' <div><%= @post.text %></div>';
+    new_post = new_post + '<div>@<%= @post.location %></div>';
+    new_post = new_post + '<hr>';
+    new_post = new_post + '<div>View 1,066 comments</div>';
+    new_post = new_post + '</li>';
+    $('#tiles').prepend(new_post);
+
+    $('.star').raty({
+            path     : 'assets/',
+            readOnly: true,
+            starHalf : 'spoon-half.png',
+            starOff  : 'spoon-off.png',
+            starOn   : 'spoon-on.png',
+            width    : 160,
+            score: function() {
+                return $(this).attr('data-score');
+            }
+        });
+
+    //applyLayout();
+<% end %>

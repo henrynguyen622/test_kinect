@@ -1,0 +1,67 @@
+
+<div>
+	<%= form_for @user, url: {controller:"posts", action: "profilephoto"}, :remote => true, method: :put do |f| %>
+	  <p>
+	    <label>My Avatar</label>
+      <%= image_tag(@user.avatar.small_thumb) if @user.avatar? %>
+	    <%= f.file_field :avatar %>
+	    <%= f.hidden_field :avatar_cache %>
+      <%= f.submit "Share", :class =>'btn btn-primary'%>
+	  </p>
+	<% end %>
+</div>
+
+
+<div>
+  <%= form_for @post, url: {controller:"posts", action: "create"}, :remote => true do |f| %>
+    <%= f.text_area :text, size: "60x3" %>
+    <%= f.hidden_field :author_id %>
+    <%= f.hidden_field :wall_id %>
+    <%= f.file_field :postphoto %>
+    <%= f.text_field :title %>
+    <%= f.text_field :rating %>
+    <%= f.text_field :location %>
+    <a class="btn" href="#"><i class="icon-camera"></i></a>
+    <a class="btn" href="#"><i class="icon-map-marker"></i></a>
+    <%= f.submit "Share", :class =>'btn btn-primary'%>
+  <% end %>
+
+</div>
+
+
+<table id="homewall">
+    <% @posts.each do |p| %>
+      <tr id="post_<%= p.id%>">
+        <td><%= p.text %></td>
+        <td><%= p.title %></td>
+        <td><%= p.rating %></td>
+        <td><%= p.location %></td>
+        <td><%= image_tag(p.postphoto.small_thumb) if p.postphoto? %> </td>
+        <td>
+          <%= button_to "delete", {:controller => :posts,
+        :action => 'destroy', :id => p.id }, :method => :delete,:remote => true %>
+                           </td>
+      </tr>
+    <% end %>
+  </table>  
+
+<section id="home">
+  <% if user_signed_in? %>
+    <li>
+    <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>
+    </li>
+  <% else %>
+    <li>
+    <%= link_to('Login', new_user_session_path)  %>
+    </li>
+  <% end %>
+  <% if user_signed_in? %>
+    <li>
+    <%= link_to('Edit account', edit_user_registration_path) %>
+    </li>
+  <% else %>
+    <li>
+    <%= link_to('Sign up', new_user_registration_path)  %>
+    </li>
+  <% end %>
+</section>

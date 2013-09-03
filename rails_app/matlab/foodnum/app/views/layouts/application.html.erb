@@ -1,0 +1,50 @@
+<!-- HTML5 DOCTYPE -->
+<!DOCTYPE html>
+<html lang="<%= I18n.locale.to_s %>">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : t('site.current.title') %></title>
+    <meta name="keywords" content="<%= content_for?(:keywords) ? yield(:keywords) : t('site.current.keywords') %>" >
+    <meta name="description" content= "<%= content_for?(:description) ? yield(:description) : t('site.current.description') %>" >
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  
+    <%= yield :headers %>
+
+    <%= favicon_link_tag "icons/favicon.png" %>
+    <% if protect_against_forgery? %>
+      <%= csrf_meta_tag %>
+    <% end %>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        <%= yield :javascript %>
+      })
+    </script>
+</head>
+<body>
+<%= render :partial => 'layouts/header' %>
+<div class="main-content">
+    <%= render :partial => 'layouts/sidebar2' %>
+
+    <div class="main">
+      <div>
+            <div>
+              <%= render 'layouts/messages' %>
+            </div>
+            <div>
+              <%= yield %>
+            </div>
+      </div>
+    </div>
+</div>
+
+    <% if !user_signed_in? %>
+      <div class="spoon">
+      </div>
+      <%= render :partial => 'layouts/footer' %>
+    <% end %>
+    
+</body>
+</html>

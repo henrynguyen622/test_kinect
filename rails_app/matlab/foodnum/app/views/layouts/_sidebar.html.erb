@@ -1,0 +1,36 @@
+  <div id="sidebar">
+        <!--Sidebar content-->
+  </div>
+
+  <!-- Dialog for Side bar -->
+<div id="sidebar-menu">
+  <% if user_signed_in? %>
+        <div class="row-fluid">
+          <div class="span3">
+            <%= image_tag(@user.avatar.small_thumb, size: "47x47") if @user.avatar? %>
+          </div>
+          <div class="span9">
+            <div><b>Henry Nguyen</b></div>
+            <div><%= link_to('Edit Profile', edit_user_registration_path) %></div>
+          </div>
+        </div>
+        <div class="sidebar-line">
+        </div>
+        <div>
+          <%= link_to "Home", root_path, :class => 'go_home' %>
+        </div>
+        <div>
+          <%= link_to "Everything", root_path, :class => 'go_home' %>
+        </div>
+        <div>
+          <%= link_to "Friends", root_path, :class => 'go_home' %>
+        </div>
+        <div>
+          <%= link_to "Follower", root_path, :class => 'go_home' %>
+        </div>
+        <div class="sidebar-footer">
+          <p> <%= Date.today.year %> © <%= link_to t('site.name'), 'http://localhost:3000/' %></p>
+        </div>
+  <% end %>
+</div>
+<!-- Dialog for Side bar -->

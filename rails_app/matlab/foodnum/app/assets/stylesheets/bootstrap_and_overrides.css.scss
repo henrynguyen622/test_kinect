@@ -1,0 +1,200 @@
+@import "bootstrap";
+body { padding-top: 60px; }
+@import "bootstrap-responsive";
+@import "variables";
+
+/********** Header **********/
+
+.navbar-row {
+  @extend .row;
+  margin-top: 12px;
+  margin-bottom: 8px; 
+}
+
+.brand{
+    padding: 0px 0px 0px 0px !important;
+    width: 152px;
+    height: 36px;
+    background: $buttons-img 0 0 no-repeat;
+    /* Hide the text. */
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    /* for the text */
+    font-size: 40px !important;
+    font-family:"Brush Script Std" !important;
+    font-style:normal !important;
+    color: $red_text_color !important;
+}
+
+/********** End Header **********/
+
+/********** Footer **********/
+
+footer {
+    color: #666;
+    background: $red_text_color;
+    padding: 10px 0 0px 0;
+    border-top: 1px solid #000;
+    text-align: center;
+}
+
+
+/********** End Footer **********/
+
+/********** Side Bar **********/
+.sidebar-line{
+  width: 100%;
+  height: 2px;
+  margin-top: 10px;
+  border-top: 1px solid $red_text_color;
+}
+
+#sidebar{
+  background: $panel-img 0 0 no-repeat;
+  width: 120px !important;
+  height: 1020px !important;
+  display:inline;
+  float:left;
+  position: fixed;
+}
+
+#sidebar-menu{
+  background: $panel-img 0 0 no-repeat;
+  background-position: 174px 0px;
+  background-color: transparent;
+  width: 234px !important;
+  height: 1020px !important;
+  padding: 20px 0px 0px 0px;
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+.sidebar-footer{
+  margin-top: 450px;
+}
+
+/********** End Side Bar **********/
+
+
+/********** Body **********/
+.main-content{
+  @extend .container-fluid;
+  background-color:$bg_gray;
+  padding: 0px !important;
+}
+
+.main {
+  padding: 20px 20px 0px 40px;
+}
+
+
+.spoon {
+  height:500px;
+  background: $spoon-img 0 0 no-repeat;
+}
+
+/********** End Body **********/
+
+/********** Post **********/
+.star img{
+  display:inline-block !important;
+}
+
+
+/********** End Post **********/
+
+
+/********** Buttons and Input **********/
+
+.searchbar {
+  height: 21px !important;
+  padding-top: 5px !important;
+  width: 230px !important;
+  margin-bottom: 0px !important;
+  background-color: $header_color !important;
+}
+
+.search-icon {
+  background: $buttons-img 0 0 no-repeat;
+  background-position: -155px 0px;
+  height: 32px !important;
+  width: 36px !important;
+  border-style:none !important;
+}
+
+.search-icon:hover {
+  background-position: -194px 0px;
+}
+
+.menu-btn-group {
+  @extend .btn-group;
+  margin-top: 0px !important;
+}
+
+.menu-name{
+  @extend .btn;
+  height: 32px !important;
+  width: 162px !important;
+  
+}
+
+.menu-button{
+  display: inline-block;
+  background: $buttons-img 0 0 no-repeat;
+  background-position: -230px 5px;
+  height: 25px !important;
+  width: 25px !important;
+}
+
+.menu-button:hover{
+  background-position: -254px 5px;
+}
+
+.menu-toggle-btn{
+  @extend .btn;
+  @extend .dropdown-toggle;
+  height: 32px !important;
+  width: 32px !important;
+  padding: 0px !important;
+}
+
+.btn-food {
+  @extend .btn;
+  background: $red_text_color !important;
+  // more stuff
+}
+
+#upload_btn{
+  background: $common-btn 0 0 repeat;
+  height: 27px;
+  width: 150px;
+  font: 18px calibri;
+  padding-top: 3px;
+  color: #FFFFFF;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border-style:none;
+}
+
+#upload_btn:hover{
+  background: $common-hover-btn 0 0 repeat;
+}
+
+/********** End Buttons **********/
+
+
+/********** Command Tags **********/
+a{
+  color: black; 
+}
+a:hover{
+  color: black;
+}
+
+.cell-div{
+  display: inline-block;
+}
+
+/********** End Command Tags **********/
+
