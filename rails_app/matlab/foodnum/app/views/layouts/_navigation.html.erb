@@ -1,17 +1,12 @@
-<div class="navbar-row">
-	<div class="span3">
-	<%= link_to t('site.name'), root_path, :class => 'brand' %>
-	</div>
-
-	<div class="span6">
-				  <input type="text" class="searchbar" placeholder="Find food or restaurant" >
-				  <input type="text" class="searchbar" placeholder="Near Orange, CA">
-				  <input type="button" class="search-icon">
-				  <!-- <a class="btn-food btn-medium" href="#"><i class="icon-search icon-white"></i></a> -->
-	</div>
-	<div class="span3">
+<div>
+	<center>
+	  <%= link_to t('site.name'), root_path, :class => 'header_logo' %>
+		
+	  <input type="text" class="searchbar" placeholder="Find food or restaurant" >
+	  <input type="text" class="searchbar" placeholder="Near Orange, CA">
+	  <input type="button" class="search-icon">
 		  <% if user_signed_in? %>
-			<div class="menu-btn-group" style="height:32px !important;">
+			<span class="menu-btn-group" style="height:32px !important;margin-left: 25px;">
 				<%= image_tag(@user.avatar.small_thumb, size: "32x32") if @user.avatar? %>
 			  <button class="menu-name"><b>Henry Nguyen</b></button>
 			  <button class="menu-toggle-btn" data-toggle="dropdown">
@@ -25,7 +20,7 @@
 			    	<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>
 			    </li>
 			  </ul>
-			</div>
+			</span>
 		  <% end %>
-	</div>
+	</center>
 </div>
