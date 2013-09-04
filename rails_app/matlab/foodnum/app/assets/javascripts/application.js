@@ -14,6 +14,6 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery.remotipart
-//= require bootstrap
+//= require bootstrap-dropdown
 //= require underscore
 //= require_tree .

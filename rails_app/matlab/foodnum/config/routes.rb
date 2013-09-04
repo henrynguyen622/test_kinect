@@ -61,7 +61,8 @@ Foodnum::Application.routes.draw do
   resources :posts
   match "home"                           => 'home#index'
   match "/posts/create_pic"                           => 'posts#create_pic',                 :as => 'postcreate'
-  match "/posts/profilephoto"                     => 'posts#profilephoto',           :as => 'postprofile'
+  match "/users/profilephoto"                     => 'posts#profilephoto',           :as => 'postprofile'
+  match "/posts/profilephoto"                     => 'posts#profilephoto'
   root :to => "frontpage#index"
   match 'posts' => 'posts#index', :as => :home
 
