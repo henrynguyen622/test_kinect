@@ -80,7 +80,8 @@ footer {
 
 #everything_menu{
   background: $buttons-img 0 0 no-repeat;
-  background-position: -329px 0px;
+  /* background-position: -329px 0px; */
+  background-position: -354px 0px;
   height: 23px !important;
   width: 23px !important;
   margin-top: 15px;
@@ -238,6 +239,27 @@ a:hover{
 .cell-div{
   display: inline-block;
 }
+
+.edit_profile{
+  font: 13px Calibri;
+  color: #717171;
+}
+
+.edit_profile:hover{
+  text-decoration:none;
+  color: $red_text_color;
+}
+
+.side_menu{
+  font: 14px Calibri;
+  color: #3f3636;
+}
+
+.side_menu:hover{
+  text-decoration:none;
+  color: $red_text_color;
+}
+
 
 /********** End Command Tags **********/
 
