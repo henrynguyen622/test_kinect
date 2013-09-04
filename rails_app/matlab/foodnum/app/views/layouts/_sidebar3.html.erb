@@ -10,12 +10,12 @@
   <% end %>
 </div>
 <div id="slide">
-    <div style="padding:12px 0px 6px 0px;border-bottom: 1px solid #e7e7e7;"> 
-            <div style="font:regular bold 13px Arial;color: #3f3636">Henry Nguyen</div>
+    <div style="padding:12px 0px 11px 0px;border-bottom: 1px solid #e7e7e7;"> 
+            <div style="font:bold 13px Arial;color: #3f3636">Henry Nguyen</div>
             <div><%= link_to 'Edit Profile', edit_user_registration_path, :class =>"edit_profile" %></div>
     </div>
-	<div style="margin: 15px 0px;"><%= link_to "Home", root_path, :class =>"side_menu" %></div>
+	<div style="margin: 15px 0px;"><%= link_to "Home", root_path, :class =>"side_menu", :id => "home_menu_link" %></div>
 	<div style="margin: 17px 0px;"><%= link_to "Everything", root_path, :class =>"side_menu", :style=>'color:#f1442b'  %></div>
-	<div style="margin: 15px 0px;"><%= link_to "Friends", root_path, :class =>"side_menu"  %></div>
-	<div style="margin: 15px 0px;"><%= link_to "Followers", root_path, :class =>"side_menu"  %></div>
+	<div style="margin: 15px 0px;"><%= link_to "Friends", root_path, :class =>"side_menu", :id => "friends_menu_link"   %></div>
+	<div style="margin: 17px 0px;"><%= link_to "Followers", root_path, :class =>"side_menu", :id => "followers_menu_link"   %></div>
 </div>
