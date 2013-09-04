@@ -43,35 +43,78 @@ footer {
 /********** End Footer **********/
 
 /********** Side Bar **********/
-.sidebar-line{
-  width: 100%;
-  height: 2px;
-  margin-top: 10px;
-  border-top: 1px solid $red_text_color;
+#sticky_side_menu{
+    position:fixed;
+    top: 56;
+    left: 0px;
+    width:58px;
+    height:100%;
+    background-color:#FFFFFF;
+    layer-background-color:#FFFFFF;
 }
 
-#sidebar{
-  background: $panel-img 0 0 no-repeat;
-  width: 120px !important;
-  height: 1020px !important;
-  display:inline;
-  float:left;
-  position: fixed;
+#slide {
+    display:none;
+    position:fixed;
+    top: 56;
+    left: 58px;
+    width:144px;
+    height:100%;
+    background-color:#FFFFFF;
+    layer-background-color:#FFFFFF;
+    z-index: 2;
 }
 
-#sidebar-menu{
-  background: $panel-img 0 0 no-repeat;
-  background-position: 174px 0px;
-  background-color: transparent;
-  width: 234px !important;
-  height: 1020px !important;
-  padding: 20px 0px 0px 0px;
-  margin-top: 40px;
-  margin-left: 20px;
+#home_menu{
+  background: $buttons-img 0 0 no-repeat;
+  background-position: -280px 0px;
+  height: 22px !important;
+  width: 22px !important;
+  margin-top: 15px;
+  margin-left: 15px;
 }
 
-.sidebar-footer{
-  margin-top: 450px;
+#home_menu:hover{
+  background-position: -304px 0px;
+}
+
+#everything_menu{
+  background: $buttons-img 0 0 no-repeat;
+  background-position: -329px 0px;
+  height: 23px !important;
+  width: 23px !important;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+#everything_menu:hover{
+  background-position: -354px 0px;
+}
+
+#friends_menu{
+  background: $buttons-img 0 0 no-repeat;
+  background-position: -380px 0px;
+  height: 22px !important;
+  width: 22px !important;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+#friends_menu:hover{
+  background-position: -406px 0px;
+}
+
+#followers_menu{
+  background: $buttons-img 0 0 no-repeat;
+  background-position: -430px 0px;
+  height: 22px !important;
+  width: 22px !important;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+#followers_menu:hover{
+  background-position: -453px 0px;
 }
 
 /********** End Side Bar **********/

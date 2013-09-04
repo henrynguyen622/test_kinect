@@ -38,6 +38,28 @@ $(document).ready(function(){
                  topPos: '300px',                                   //position from the top
                  fixedPosition: true                               //options: true makes it stick(fixed position) on scroll
              });
+
+// $('#slide').hover(function () {
+//      $(this).stop().animate({left:"0px"},500);     
+//    },function () {
+//        var width = $(this).width() -10;
+//        $(this).stop().animate({left: - width  },500);     
+// });
+
+  $('#sticky_side_menu').hover(function () {
+    if ($('#slide').is(":hidden")) {
+      $('#slide').show('slide', {direction: 'left'}, 300);
+    }
+  });
+
+
+   $('.main').mouseover(function() {
+      if (!$('#slide').is(":hidden")) {
+        $('#slide').hide('slide', {direction: 'left'}, 300);
+      }
+ });
+
+
 });
 
 //upload button

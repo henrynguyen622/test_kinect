@@ -1,0 +1,21 @@
+<div id="sticky_side_menu">
+  <% if user_signed_in? %>
+          <div style="padding:12px;border-bottom: 1px solid #e7e7e7;">
+            <%= image_tag(@user.avatar.small_thumb, size: "34x34") if @user.avatar? %>
+          </div>
+          <div id="home_menu"></div>
+          <div id="everything_menu"></div>
+          <div id="friends_menu"></div>
+          <div id="followers_menu"></div>
+  <% end %>
+</div>
+<div id="slide">
+    <div style="padding:12px 0px 6px 0px;border-bottom: 1px solid #e7e7e7;"> 
+            <div><b>Henry Nguyen</b></div>
+            <div><%= link_to('Edit Profile', edit_user_registration_path) %></div>
+    </div>
+	<div style="margin: 15px 0px;">Home</div>
+	<div style="margin: 15px 0px;">Everything</div>
+	<div style="margin: 15px 0px;">Friends</div>
+	<div style="margin: 15px 0px;">Followers</div>
+</div>
