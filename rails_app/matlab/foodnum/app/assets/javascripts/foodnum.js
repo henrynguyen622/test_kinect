@@ -27,25 +27,8 @@
 
 // side menu
 $(document).ready(function(){
-             $('.slide-out-div').tabSlideOut({
-                 tabHandle: '.handle',                              //class of the element that will be your tab
-                 pathToTabImage: '/assets/panel_button.png',          //path to the image for the tab (optionaly can be set using css)
-                 imageHeight: '124px',                               //height of tab image
-                 imageWidth: '34px',                               //width of tab image    
-                 tabLocation: 'left',                               //side of screen where tab lives, top, right, bottom, or left
-                 speed: 300,                                        //speed of animation
-                 action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
-                 topPos: '300px',                                   //position from the top
-                 fixedPosition: true                               //options: true makes it stick(fixed position) on scroll
-             });
-
-// $('#slide').hover(function () {
-//      $(this).stop().animate({left:"0px"},500);     
-//    },function () {
-//        var width = $(this).width() -10;
-//        $(this).stop().animate({left: - width  },500);     
-// });
-
+  
+  //  Sticky Sidebar menu
   $('#sticky_side_menu').hover(function () {
     if ($('#slide').is(":hidden")) {
       $('#slide').show('slide', {direction: 'left'}, 300);
@@ -94,11 +77,11 @@ $(document).ready(function(){
 });
 
 //upload button
-$(document).ready(function(){
-    $('#upload_btn').click(function() {
-        $('#post_postphoto').trigger('click');
-    });
-});
+// $(document).ready(function(){
+//     $('#upload_btn').click(function() {
+//         $('#post_postphoto').trigger('click');
+//     });
+// });
 
 //layout for content
 $(document).ready(function(){
@@ -128,38 +111,31 @@ $(document).ready(function(){
 
       $('#tiles').imagesLoaded(function() {
 
-        /**
-         * When scrolled all the way to the bottom, add more tiles.
-         */
-        function onScroll(event) {
-          // Check if we're within 100 pixels of the bottom edge of the broser window.
-          var winHeight = window.innerHeight ? window.innerHeight : $(window).height(); // iphone fix
-          var closeToBottom = ($(window).scrollTop() + winHeight > $(document).height() - 100);
+          /**
+           * When scrolled all the way to the bottom, add more tiles.
+           */
+          function onScroll(event) {
+            // Check if we're within 100 pixels of the bottom edge of the broser window.
+            var winHeight = window.innerHeight ? window.innerHeight : $(window).height(); // iphone fix
+            var closeToBottom = ($(window).scrollTop() + winHeight > $(document).height() - 100);
 
-          if (closeToBottom) {
-            // Get the first then items from the grid, clone them, and add them to the bottom of the grid.
-            var items = $('#tiles li'),
-                firstTen = items.slice(0, 10);
-            $('#tiles').append(firstTen.clone());
+            if (closeToBottom) {
+              // Get the first then items from the grid, clone them, and add them to the bottom of the grid.
+              var items = $('#tiles li'),
+                  firstTen = items.slice(0, 10);
+              $('#tiles').append(firstTen.clone());
 
-            applyLayout();
-          }
-        };
+              applyLayout();
+            }
+          };
 
-        // Capture scroll event.
-        $(window).bind('scroll', onScroll);
+          // Capture scroll event.
+          $(window).bind('scroll', onScroll);
 
-        // Call the layout function.
-        handler = $('#tiles li');
-        handler.wookmark(options);
+          // Call the layout function.
+          handler = $('#tiles li');
+          handler.wookmark(options);
 
-        $('#post_postphoto').change(function() { 
-                // select the form and submit
-               // alert("hell");
-               var uploadpost = $('#upload_post').children(":first");//.clone()
-               $('#tiles').prepend(uploadpost);
-               applyLayout();
-        });
       });
 
 });
@@ -180,6 +156,30 @@ $(document).ready(function(){
         });
     };
     applyStarRaty();
+
+      $('#star_rating').raty({
+          path     : 'assets/',
+          starHalf : 'spoon-half.png',
+          starOff  : 'spoon-off.png',
+          starOn   : 'spoon-on.png',
+          width    : 160,
+          score: function() {
+              return $(this).attr('data-score');
+          },
+          click: function(score, evt) {
+            $('#post_rating').attr('value',score);
+          },
+      });
+
+  $( "#upload_post" ).dialog({
+      modal: true,
+      autoOpen: false,
+      position: { my: 'center', at: 'center', of: window},
+    });
+
+  $('#upload_btn').click(function() {
+        $( "#upload_post" ).dialog( "open");
+    });
 });
 
 

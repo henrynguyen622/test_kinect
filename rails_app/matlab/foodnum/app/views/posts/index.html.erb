@@ -1,6 +1,6 @@
 <div style="margin-bottom:20px;">
 <center>
-  <button id="upload_btn">Upload a photo</button>
+  <button id="upload_btn" data-toggle="#upload_post">Upload a photo</button>
 </center>
 </div>
 <div id="main">
@@ -28,21 +28,22 @@
 
 
 <!-- upload section -->
-<div id="upload_post" style="display:none">
-        <li>
-            <%= form_for @post, url: {controller:"posts", action: "create_pic"}, :remote => true, :html => {:'data-type' => 'json'} do |f| %>
-              <%= f.text_area :text, size: "60x3" %>
-              <%= f.hidden_field :author_id %>
-              <%= f.hidden_field :wall_id %>
-              <%= f.file_field :postphoto %>
-              <%= f.text_field :title %>
-              <%= f.text_field :rating %>
-              <%= f.text_field :location %>
-              <a class="btn" href="#"><i class="icon-camera"></i></a>
-              <a class="btn" href="#"><i class="icon-map-marker"></i></a>
-              <%= f.submit "Share", :class =>'btn btn-primary'%>
-            <% end %>
-        </li>
+<div id="upload_post" title="Share your food.">
+
+    <%= form_for @post, url: {controller:"posts", action: "create_pic"}, :remote => true, :html => {:'data-type' => 'json'} do |f| %>
+      <%= f.text_field :title, :placeholder => "Your food name here!" %>
+      <%= f.text_area :text, size: "60x3", :placeholder => "Tell something about your dish." %>
+      <%= f.hidden_field :author_id %>
+      <%= f.hidden_field :wall_id %>
+      <%= f.file_field :postphoto %>
+      <%= f.hidden_field :rating, :value => 0 %>
+      <div id="star_rating" data-score="0"></div>
+
+      <%= f.text_field :location, :placeholder => "Your location."  %>
+<!--       <a class="btn" href="#"><i class="icon-camera"></i></a>
+      <a class="btn" href="#"><i class="icon-map-marker"></i></a> -->
+      <%= f.submit "Share", :class =>'btn btn-primary'%>
+    <% end %>
 </div>
 
 
