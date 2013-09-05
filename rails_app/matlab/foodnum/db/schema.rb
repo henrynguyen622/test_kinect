@@ -18,12 +18,12 @@ ActiveRecord::Schema.define(:version => 20130904233725) do
     t.integer  "wall_id"
     t.integer  "author_id"
     t.string   "text"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "postphoto"
     t.string   "title"
     t.integer  "rating"
     t.string   "location"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
   end
 
   create_table "users", :force => true do |t|
