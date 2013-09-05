@@ -10,7 +10,9 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   mount_uploader :avatar, AvatarUploader
   def display_name
-  	name.titleize
+    display_name = ''
+    display_name = name.titleize unless name.blank?
+    return display_name
   end
 
 end
