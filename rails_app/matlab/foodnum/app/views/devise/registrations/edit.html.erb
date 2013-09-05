@@ -25,7 +25,7 @@
 
 <div>
   <h3>Change Profile Picture</h3>
-  <%= form_for resource, :as => resource_name, :url => 'profilephoto', :remote => true, method: :put do |f| %>
+  <%= form_for resource, :as => resource_name, :url => 'profilephoto', method: :put do |f| %>
     <p>
       <label>My Avatar</label>
       <%= image_tag(@user.avatar.small_thumb) if @user.avatar? %>
@@ -36,7 +36,16 @@
   <% end %>
 </div>
 
+<div>
+  <h3>Change Name</h3>
+  <%= form_for resource, :as => resource_name, :url => 'update' do |f| %>
 
+    <div><%= f.label :name %>
+    <%= f.text_field :name %></div>
+
+    <div><%= f.submit "Update" %></div>
+<% end %>
+</div>
 
 <h3>Cancel my account</h3>
 

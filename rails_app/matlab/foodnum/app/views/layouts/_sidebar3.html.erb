@@ -1,7 +1,12 @@
 <div id="sticky_side_menu">
   <% if user_signed_in? %>
           <div style="padding:12px;border-bottom: 1px solid #e7e7e7;">
-            <%= image_tag(@user.avatar.small_thumb, size: "34x34") if @user.avatar? %>
+            <% if @user.avatar? %>
+              <%= image_tag(@user.avatar.small_thumb.url, size: "34x34") %>
+              <% else %>
+              <%= image_tag('/assets/avatar.jpg', size: "34x34") %> 
+            <% end %>
+
           </div>
           <div id="home_menu"></div>
           <div id="everything_menu"></div>
@@ -11,7 +16,7 @@
 </div>
 <div id="slide">
     <div style="padding:12px 0px 11px 0px;border-bottom: 1px solid #e7e7e7;"> 
-            <div style="font:bold 13px Arial;color: #3f3636">Henry Nguyen</div>
+            <div style="font:bold 13px Arial;color: #3f3636"><%= @user.display_name %></div>
             <div><%= link_to 'Edit Profile', edit_user_registration_path, :class =>"edit_profile" %></div>
     </div>
 	<div style="margin: 15px 0px;"><%= link_to "Home", root_path, :class =>"side_menu", :id => "home_menu_link" %></div>

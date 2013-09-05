@@ -59,10 +59,11 @@ Foodnum::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   resources :posts
-  match "home"                           => 'home#index'
-  match "/posts/create_pic"                           => 'posts#create_pic',                 :as => 'postcreate'
-  match "/users/profilephoto"                     => 'posts#profilephoto',           :as => 'postprofile'
-  match "/posts/profilephoto"                     => 'posts#profilephoto'
+  match "home"                               => 'home#index'
+  match "/posts/create_pic"                  => 'posts#create_pic',             :as => 'postcreate'
+  match "/posts/profilephoto"                => 'posts#profilephoto',           :as => 'postprofile'
+  match "/users/update"                      => 'users#update'
+  match "/users/profilephoto"                => 'users#profilephoto'
   root :to => "frontpage#index"
   match 'posts' => 'posts#index', :as => :home
 

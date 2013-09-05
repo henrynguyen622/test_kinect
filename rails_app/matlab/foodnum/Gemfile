@@ -36,6 +36,9 @@ gem 'carrierwave','0.9.0'
 
 gem 'remotipart','1.2.1'
 
+
+gem 'thin','1.5.1'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

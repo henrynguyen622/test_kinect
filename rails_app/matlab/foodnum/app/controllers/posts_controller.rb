@@ -8,7 +8,8 @@ class PostsController < ApplicationController
     
     @user = current_user
 
-    @posts = Post.where(wall_id:@post.wall_id)
+    #@posts = Post.where(wall_id:@post.wall_id)
+    @posts = Post.all
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @posts }
@@ -67,12 +68,12 @@ class PostsController < ApplicationController
   	#@user.avatar = Avatar.new(par)
   	@user.avatar = par[:avatar]
   	@user.save
-	respond_to do |format|
-	  format.html 
-	  format.json {render :json => :create }
-	  format.js
-	  format.any
-	end
+  	respond_to do |format|
+  	  format.html 
+  	  format.json {render :json => :create }
+  	  format.js
+  	  format.any
+  	end
   end
 
   def update

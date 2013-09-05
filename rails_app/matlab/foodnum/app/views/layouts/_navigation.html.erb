@@ -7,8 +7,12 @@
 	  <input type="button" class="search-icon">
 		  <% if user_signed_in? %>
 			<span class="menu-btn-group" style="height:32px !important;margin-left: 25px;">
-				<%= image_tag(@user.avatar.small_thumb, size: "32x32") if @user.avatar? %>
-			  <button class="menu-name"><b>Henry Nguyen</b></button>
+				<% if @user.avatar? %>
+					<%= image_tag(@user.avatar.small_thumb.url, size: "32x32") %>
+  				<% else %>
+					<%= image_tag('/assets/avatar.jpg', size: "32x32") %> 
+				<% end %>
+			  <button class="menu-name"><b><%= @user.display_name %></b></button>
 			  <button class="menu-toggle-btn" data-toggle="dropdown">
 			    <span class="menu-button"></span>
 			  </button>
