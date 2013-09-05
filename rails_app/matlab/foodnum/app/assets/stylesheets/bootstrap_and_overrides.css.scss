@@ -177,11 +177,28 @@ footer {
   margin-top: 0px !important;
 }
 
+.header_border{
+  border: $light_border;
+  -moz-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
 .menu-name{
-  @extend .btn;
-  height: 32px !important;
-  width: 162px !important;
-  
+  padding-top:6px;
+  height: 26px;
+  width: 131px;
+  display: inline-block;
+  color: #3f3636;
+  font: bold 14px Arial;
+  background-color:$header_color;
+  border: $light_border;
+  border-left: none;
+}
+
+.menu-name:hover{
+  text-decoration:none;
 }
 
 .menu-button{
@@ -197,11 +214,20 @@ footer {
 }
 
 .menu-toggle-btn{
-  @extend .btn;
-  @extend .dropdown-toggle;
-  height: 32px !important;
-  width: 32px !important;
+  height: 34px !important;
+  width: 34px !important;
   padding: 0px !important;
+  background-color: $header_color !important;
+  border: $light_border;
+  border-left: none;
+  -moz-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.menu-toggle-btn:hover{
+  background-color: $header_color !important;
 }
 
 .btn-food {

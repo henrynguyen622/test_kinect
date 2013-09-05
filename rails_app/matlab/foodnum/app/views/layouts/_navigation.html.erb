@@ -8,11 +8,11 @@
 		  <% if user_signed_in? %>
 			<span class="menu-btn-group" style="height:32px !important;margin-left: 25px;">
 				<% if @user.avatar? %>
-					<%= image_tag(@user.avatar.small_thumb.url, size: "32x32") %>
+					<%= image_tag(@user.avatar.small_thumb.url, size: "32x32", :class => "header_border") %>
   				<% else %>
-					<%= image_tag('/assets/avatar.jpg', size: "32x32") %> 
+					<%= image_tag('/assets/avatar.jpg', size: "32x32", :class => "header_border") %> 
 				<% end %>
-			  <button class="menu-name"><b><%= @user.display_name %></b></button>
+			  <a class="menu-name" href="/"><%= @user.display_name %></a>
 			  <button class="menu-toggle-btn" data-toggle="dropdown">
 			    <span class="menu-button"></span>
 			  </button>
