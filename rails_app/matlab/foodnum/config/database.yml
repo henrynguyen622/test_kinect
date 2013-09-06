@@ -14,13 +14,13 @@ test:
   host: localhost
   database: foodnum
   port: 3306
-  username: root
-  password: 
+  username: henry
+  password: henry
 
 production:
   adapter: mysql2
   host: localhost
   database: foodnum
   port: 3306
-  username: root
-  password: 
+  username: henry
+  password: henry
